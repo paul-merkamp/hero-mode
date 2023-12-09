@@ -8,15 +8,22 @@ TagManager:
   - sword
   - destructible
   - entity
+  - door
+  - damaging_surface
+  - player_follower
+  - collectible
+  - switch
+  - event
+  - loading_zone
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - damaging_surface
   - Water
   - UI
-  - 
-  - 
+  - damaging_entity
+  - vision_cover
   - 
   - 
   - 

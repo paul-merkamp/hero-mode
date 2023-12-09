@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class MagicController : MonoBehaviour
@@ -10,16 +11,22 @@ public class MagicController : MonoBehaviour
     private SimpleDestructible lockedItem;
     private ParticleSystem particles;
 
-    private PlayerModeController playerModeController;
+    private AudioSource sfx;
+    public float maxVolume = 1f;
+    public float audioTransitionTime = 2f;
+
+    private bool isMagicEnabled = false;
 
     public void Start()
     {
         particles = magicCursor.transform.GetChild(0).GetComponent<ParticleSystem>();
-        playerModeController = FindAnyObjectByType<PlayerModeController>();
+        sfx = GameObject.Find("SFX/SFX_Magic").GetComponent<AudioSource>();
     }
 
     void Update()
     {
+        if (!isMagicEnabled) return;
+
         // Get the mouse position in screen coordinates
         Vector3 mousePosition = Input.mousePosition;
 
@@ -40,6 +47,7 @@ public class MagicController : MonoBehaviour
                 isItemLocked = false;
 
                 particles.Stop();
+                StartCoroutine(ChangeVolume(0.0f, audioTransitionTime));
             }
             else
             {
@@ -50,13 +58,14 @@ public class MagicController : MonoBehaviour
                 {
                     // Check if the hit object is a SimpleDestructible
                     SimpleDestructible destructible = hit.collider.GetComponent<SimpleDestructible>();
-                    if (destructible != null)
+                    if (destructible != null && destructible.type == SimpleDestructible.DestructibleType.Any)
                     {
                         // Lock the item to the cursor
                         lockedItem = destructible;
                         isItemLocked = true;
 
                         particles.Play();
+                        StartCoroutine(ChangeVolume(maxVolume, audioTransitionTime));
                     }
                 }
             }
@@ -74,11 +83,35 @@ public class MagicController : MonoBehaviour
         }
     }
 
-    public void Enable() {
-        magicCursor.SetActive(true);
+    private IEnumerator ChangeVolume(float targetVolume, float duration)
+    {
+        float elapsedTime = 0.0f;
+        float startVolume = sfx.volume;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / duration;
+            sfx.volume = Mathf.Lerp(startVolume, targetVolume, t);
+            yield return null;
+        }
+
+        sfx.volume = targetVolume;
     }
 
-    public void Disable() {
+    public void Enable()
+    {
+        magicCursor.SetActive(true);
+        isMagicEnabled = true;
+        
+        Cursor.visible = false;
+    }
+
+    public void Disable()
+    {
         magicCursor.SetActive(false);
+        isMagicEnabled = false;
+
+        Cursor.visible = true;
     }
 }

@@ -7,9 +7,10 @@ public class Entity : MonoBehaviour
     public int health;
     public float iFrameLength;
     public AudioClip takeDamageSFX;
+    public float knockbackForce = 0.1f;
 
-    private SpriteRenderer sprite;
-    private AudioSource sfx;
+    protected SpriteRenderer sprite;
+    protected AudioSource sfx;
 
     private bool invincible = false;
 
@@ -34,17 +35,40 @@ public class Entity : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int damage){
-        if (!invincible) {
+    public void Move(Vector3 direction)
+    {
+        transform.position += direction * moveSpeed * Time.deltaTime;
+
+        // Flip
+        if (direction.x < 0f)
+        {
+            transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+        }
+        else if (direction.x > 0f)
+        {
+            transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+        }
+    }
+
+    public void TakeDamage(int damage, GameObject collision = null)
+    {
+        if (!invincible)
+        {
             health -= damage;
             StartCoroutine(DoIFrames());
+
+            Rigidbody2D rb2d = GetComponent<Rigidbody2D>();
+            if (rb2d != null && collision != null)
+            {
+                Vector2 knockbackDirection = (transform.position - collision.transform.position).normalized;
+                rb2d.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
+            }
         }
     }
 
     IEnumerator DoIFrames()
     {
-        if (takeDamageSFX != null)
-            sfx.PlayOneShot(takeDamageSFX);
+        sfx.PlayOneShot(takeDamageSFX);
         
         invincible = true;
 
@@ -56,17 +80,12 @@ public class Entity : MonoBehaviour
 
         if (health <= 0)
         {
-            Destroy(gameObject);
+            Die();
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public virtual void Die()
     {
-
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-
+        Destroy(gameObject);
     }
 }

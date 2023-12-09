@@ -1,21 +1,48 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : Entity
+public class PlayerController : MonoBehaviour
 {
     private PlayerModeController playerModeController;
+    private ResourceUIController resourceUIController;
 
     private readonly List<GameObject> modeGOs = new List<GameObject>();
     private readonly List<Animator> modeAnimators = new List<Animator>();
     private readonly List<SpriteRenderer> spriteRenderers = new List<SpriteRenderer>();
-
-    private GameObject interactIndicator;
     
-    private PlayerSword sword;
+    // Entity values
+    public int health;
+    public float iFrameLength;
+    public AudioClip takeDamageSFX;
+    public float knockbackForce = 0.1f;
+
+    // Player values
+    public int frogTokens = 0;
+    public int keys = 0;
+    public int bossKeys = 0;
+
+    public SpriteRenderer spriteRenderer;
+    public AudioSource sfx;
+
+    public bool invincible = false;
+    public bool playerInputFrozen = false;
 
     private void Start()
     {
+        PlayerController existingPlayer = FindObjectOfType<PlayerController>();
+        if (existingPlayer != null && existingPlayer != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        DontDestroyOnLoad(gameObject);
+
+        spriteRenderer = GameObject.Find("ENTITY/Player/Forms/Sword/Sprite").GetComponent<SpriteRenderer>();
+        sfx = GameObject.Find("SFX/SFX_Player").GetComponent<AudioSource>();
+
         playerModeController = FindObjectOfType<PlayerModeController>();
+        resourceUIController = FindObjectOfType<ResourceUIController>();
 
         Transform formsTransform = transform.GetChild(0).transform;
         int childCount = formsTransform.childCount;
@@ -34,58 +61,44 @@ public class PlayerController : Entity
             SpriteRenderer spriteRenderer = modeGO.transform.GetChild(0).GetComponent<SpriteRenderer>();
             spriteRenderers.Add(spriteRenderer);
         }
-
-        interactIndicator = transform.GetChild(1).gameObject;
-
-        sword = formsTransform.GetChild(0).GetChild(2).GetComponent<PlayerSword>();
     }
 
     private void Update()
     {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
-
-        Move(horizontalInput, verticalInput);
-
-        // Set animation parameters
-        foreach (Animator a in modeAnimators)
+        if (!invincible && !playerInputFrozen)
         {
-            a.SetBool("Walking", horizontalInput != 0f || verticalInput != 0f);
-        }
-
-        // Cycle through modes
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            playerModeController.SwitchModes(-1);
-        }
-        else if (Input.GetKeyDown(KeyCode.M))
-        {
-            playerModeController.SwitchModes(1);            
-        }
-
-        // Attack
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (playerModeController.currentMode == PlayerModeController.PlayerMode.Sword)
+            // Cycle through modes
+            if (Input.GetKeyDown(KeyCode.N))
             {
-                sword.Attack();
+                playerModeController.SwitchModes(-1);
+            }
+            else if (Input.GetKeyDown(KeyCode.M))
+            {
+                playerModeController.SwitchModes(1);            
             }
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public void GainToken()
     {
-        if (collision.CompareTag("sign"))
-        {
-            interactIndicator.SetActive(true);
-        }
+        frogTokens++;
+        resourceUIController.UpdateFrogCoinCount(frogTokens);
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    public void GainKey()
     {
-        if (collision.CompareTag("sign"))
-        {
-            interactIndicator.SetActive(false);
-        }
+        keys++;
+        // resourceUIController.ShowKey(true);
+    }
+
+    public void GainBossKey()
+    {
+        bossKeys++;
+        resourceUIController.ShowBossKey(true);
+    }
+
+    public void TogglePlayerControl()
+    {
+        playerInputFrozen = !playerInputFrozen;
     }
 }

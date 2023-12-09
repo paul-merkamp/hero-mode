@@ -9,11 +9,24 @@ public class SimpleDestructible : MonoBehaviour
     public Sprite destroyedSprite;
     public AudioClip hitSound;
     public GameObject destroyedComponentsGO;
+
+    private Door door;
+
+    public enum DestructibleType
+    {
+        Any,
+        BigOnly,
+        None
+    }
+
+    public DestructibleType type = DestructibleType.Any;
     
     public void Start()
     {
         sfx = GameObject.Find("SFX/SFX_Environment").GetComponent<AudioSource>();
         animator = GetComponent<Animator>();
+
+        door = GetComponent<Door>();
     }
 
     public void GetDestroyed()
@@ -30,5 +43,10 @@ public class SimpleDestructible : MonoBehaviour
             Destroy(animator);
 
         Destroy(this);
+
+        if (door != null)
+        {
+            Destroy(door);
+        }
     }
 }

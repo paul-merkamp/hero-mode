@@ -45,7 +45,7 @@ public class PlayerSword : MonoBehaviour
             if (collider.gameObject.CompareTag("sign") || collider.gameObject.CompareTag("destructible"))
             {
                 SimpleDestructible destructible = collider.gameObject.GetComponent<SimpleDestructible>();
-                if (destructible != null)
+                if (destructible != null && destructible.type <= SimpleDestructible.DestructibleType.Any)
                 {
                     destructible.GetDestroyed();
                 }
