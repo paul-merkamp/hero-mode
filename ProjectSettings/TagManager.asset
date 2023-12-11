@@ -15,6 +15,7 @@ TagManager:
   - switch
   - event
   - loading_zone
+  - interact_event
   layers:
   - Default
   - TransparentFX

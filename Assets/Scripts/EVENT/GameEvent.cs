@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class GameEvent : MonoBehaviour
@@ -32,6 +33,21 @@ public class GameEvent : MonoBehaviour
                 break;
             case 3:
                 controller.TriggerEvent_3();
+                break;
+            case 4:
+                controller.TriggerEvent_4();
+                break;
+            case 5:
+                controller.TriggerEvent_5();
+                break;
+            case 6:
+                controller.TriggerEvent_6();
+                break;
+            case 7:
+                controller.TriggerEvent_7();
+                break;
+            case 8:
+                controller.TriggerEvent_8();
                 break;
             }
         }

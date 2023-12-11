@@ -10,7 +10,7 @@ public class PlayerFollower : MonoBehaviour
 
     private void Start()
     {
-        target = GameObject.Find("ENTITY/Player/Forms/Sword");
+        target = GameObject.Find("Player/Forms/Sword");
 
         playerModeController = FindObjectOfType<PlayerModeController>();
     }

@@ -16,6 +16,18 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: b3e37a2ca692a2747ac1b86619fbc217, type: 3}
+      propertyPath: m_SortingLayer
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: b3e37a2ca692a2747ac1b86619fbc217, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: b3e37a2ca692a2747ac1b86619fbc217, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 1751401967
+      objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: b3e37a2ca692a2747ac1b86619fbc217, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.45971203
@@ -98,7 +110,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0.15}

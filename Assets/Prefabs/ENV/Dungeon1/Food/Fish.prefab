@@ -99,6 +99,9 @@ MonoBehaviour:
   destroyedSprite: {fileID: -4715852817317863920, guid: 32b987667b9f8e94baefb8190dd0f509, type: 3}
   hitSound: {fileID: 8300000, guid: 886f02167521d8147bef6643e7852796, type: 3}
   destroyedComponentsGO: {fileID: 0}
+  dropsHearts: 1
+  heartPrefab: {fileID: 2861605585698941982, guid: 9934a52fce5ecba4d8f33227c55c9716, type: 3}
+  heartDropChance: 0.5
   type: 0
 --- !u!70 &7231958866622173577
 CapsuleCollider2D:

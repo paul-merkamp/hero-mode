@@ -15,11 +15,17 @@ public class DialogController : MonoBehaviour
     public float letterDelay = 0.05f;
     public float lineDelay = 1f;
 
+    public bool isDialogActive = false;
+    
     // Triggers the dialog with the given list of dialog lines
     public void TriggerDialog(List<string> dialogLines)
     {
-        animator.SetBool("Shown", true);
-        StartCoroutine(DialogCoroutine(dialogLines));
+        if (!isDialogActive)
+        {
+            isDialogActive = true;
+            animator.SetBool("Shown", true);
+            StartCoroutine(DialogCoroutine(dialogLines));
+        }
     }
 
     // Triggers a test dialog from the editor
@@ -119,5 +125,6 @@ public class DialogController : MonoBehaviour
         text.text = "";
 
         animator.SetBool("Shown", false);
+        isDialogActive = false;
     }
 }

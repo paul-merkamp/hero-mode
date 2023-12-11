@@ -169,10 +169,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 0.2
-  health: 3
+  health: 2
   iFrameLength: 0.2
   takeDamageSFX: {fileID: 8300000, guid: f897737bb63606e4eb9d6b384540e49e, type: 3}
-  knockbackForce: 1
+  knockbackForce: 0.1
+  hurtColor: {r: 0.74901974, g: 0.3554172, b: 0.3554172, a: 1}
+  heartDropChance: 0.25
+  heartPrefab: {fileID: 2861605585698941982, guid: 9934a52fce5ecba4d8f33227c55c9716, type: 3}
 --- !u!50 &1677390012847893559
 Rigidbody2D:
   serializedVersion: 4
@@ -181,14 +184,14 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3849853521409696637}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
+  m_Mass: 0.01
+  m_LinearDrag: 35
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -198,8 +201,8 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
+  m_CollisionDetection: 1
+  m_Constraints: 4
 --- !u!114 &2876873074186126695
 MonoBehaviour:
   m_ObjectHideFlags: 0

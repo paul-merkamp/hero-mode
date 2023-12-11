@@ -55,7 +55,7 @@ public class PlayerSword : MonoBehaviour
                 Entity entity = collider.gameObject.GetComponent<Entity>();
                 if (entity != null)
                 {
-                    entity.TakeDamage(1);
+                    entity.TakeDamage(1, gameObject);
                 }
             }
             thisDoesSFX = false;

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 5600da675a56a2249a6ae49efae7db9a
+guid: 674f4b3a56f37a94cb3be70b40654a78
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -119,18 +119,38 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: BakosSIgn
+  - name: Walk_Frame_0
     originalName: 
-    pivot: {x: 0.47826087, y: 0}
+    pivot: {x: 0.5555556, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 42
+      width: 9
+      height: 10
+    spriteID: ae756298f6493244684c53f424e75a4c
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 42}
+  - name: Walk_Frame_1
+    originalName: 
+    pivot: {x: 0.5555556, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 23
-      height: 60
-    spriteID: cae4b12f7b62e1e41904804e241ffb02
+      width: 9
+      height: 11
+    spriteID: 38d71f4cccee1864c92029ba274efc4d
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -139,26 +159,90 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
+  - name: Walk_Frame_2
+    originalName: 
+    pivot: {x: 0.5555556, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 21
+      y: 4
+      width: 9
+      height: 10
+    spriteID: c1748c1eda7ff7747b6dbe11649e1f4d
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 21, y: 4}
+  - name: Walk_Frame_3
+    originalName: 
+    pivot: {x: 0.5555556, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 23
+      width: 9
+      height: 11
+    spriteID: 52239985282af814c9ae0ac741d7edd6
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 23}
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: -1812067689
-    name: BakosSIgn
+    guid: -718690731
+    name: Walk
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: BakosSIgn
+    - name: Walk_Frame_0
       frameIndex: 0
       cellRect:
-        x: 9
+        x: 0
         y: 0
-        width: 23
-        height: 60
-      spriteId: cae4b12f7b62e1e41904804e241ffb02
+        width: 9
+        height: 10
+      spriteId: ae756298f6493244684c53f424e75a4c
+    - name: Walk_Frame_1
+      frameIndex: 1
+      cellRect:
+        x: 0
+        y: 0
+        width: 9
+        height: 11
+      spriteId: 38d71f4cccee1864c92029ba274efc4d
+    - name: Walk_Frame_2
+      frameIndex: 2
+      cellRect:
+        x: 0
+        y: 0
+        width: 9
+        height: 10
+      spriteId: c1748c1eda7ff7747b6dbe11649e1f4d
+    - name: Walk_Frame_3
+      frameIndex: 3
+      cellRect:
+        x: 0
+        y: 0
+        width: 9
+        height: 11
+      spriteId: 52239985282af814c9ae0ac741d7edd6
     linkedCells: []
     parentIndex: -1
   platformSettings: []
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 40, y: 60}
+  canvasSize: {x: 10, y: 11}

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,14 @@ public class GreenFireProjectile : MonoBehaviour
     public int lifetimeInSeconds = 20;
     private float lifetimeTimer;
 
+    public enum Direction
+    {
+        down,
+        right
+    }
+
+    public Direction direction;
+
     private void Start()
     {
         lifetimeTimer = lifetimeInSeconds;
@@ -17,7 +26,10 @@ public class GreenFireProjectile : MonoBehaviour
     private void Update()
     {
         // Move the projectile forward
-        transform.Translate(Vector2.down * speed * Time.deltaTime);
+        if (direction == Direction.right)
+            transform.Translate(Vector2.right * speed * Time.deltaTime);
+        else if (direction == Direction.down)
+            transform.Translate(Vector2.down * speed * Time.deltaTime);
 
         // Decrease the lifetime timer
         lifetimeTimer -= Time.deltaTime;

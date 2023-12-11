@@ -15,6 +15,7 @@ public class PlayerForm : MonoBehaviour
     
     private PlayerSword sword;
     private Rigidbody2D rb2d;
+    private float originalDrag;
     
     // Form-specific entity values
     public float moveSpeed;
@@ -30,11 +31,8 @@ public class PlayerForm : MonoBehaviour
         
         sword = FindAnyObjectByType<PlayerSword>();
         rb2d = GetComponent<Rigidbody2D>();
-    }
 
-    public void OnEnable()
-    {
-        PushValuesToMaster();
+        originalDrag = rb2d.drag;
     }
 
     public void Update()
@@ -83,15 +81,14 @@ public class PlayerForm : MonoBehaviour
                 }
             }
         }
+        else if (currentCollision != null && currentCollision.CompareTag("interact_event"))
+        {
+            currentCollision.GetComponent<GameEvent>().Trigger();
+        }
         else if (playerModeController.currentMode == PlayerModeController.PlayerMode.Sword)
         {
             sword.Attack();
         }
-    }
-
-    public void PushValuesToMaster()
-    {
-        player.spriteRenderer = spriteRenderer;
     }
 
     public void Move(float horizontalInput, float verticalInput)
@@ -126,12 +123,14 @@ public class PlayerForm : MonoBehaviour
                 Vector2 knockbackDirection = (transform.position - collision.transform.position).normalized;
                 rb2d.AddForce(knockbackDirection * player.knockbackForce, ForceMode2D.Impulse);
             }
+
+            player.UpdateHeartsUI();
         }
     }
 
     IEnumerator DoIFrames()
     {
-        player.sfx.PlayOneShot(player.takeDamageSFX);
+        if (!player.dead) player.sfx.PlayOneShot(player.takeDamageSFX);
         
         player.invincible = true;
 
@@ -143,8 +142,7 @@ public class PlayerForm : MonoBehaviour
 
         if (player.health <= 0)
         {
-            // TODO: Game over
-            Destroy(player.gameObject);
+            player.Die();
         }
     }
 
@@ -171,17 +169,28 @@ public class PlayerForm : MonoBehaviour
             interactIndicator.SetActive(true);
         }
 
+        else if (collision.CompareTag("interact_event"))
+        {
+            if (!collision.GetComponent<GameEvent>().triggered)
+            {
+                currentCollision = collision.gameObject;
+                interactIndicator.SetActive(true);
+            }
+        }
+
         else if (collision.CompareTag("collectible"))
         {
             Collectible collectible = collision.gameObject.GetComponent<Collectible>();
             if (collectible.type == Collectible.CollectibleType.Coin)
             {
                 player.GainToken();
+                player.sfx.PlayOneShot(collectible.collectSound);
                 Destroy(collision.gameObject);
             }
             else if (collectible.type == Collectible.CollectibleType.BossKey)
             {
                 player.GainBossKey();
+                player.sfx.PlayOneShot(collectible.collectSound);
                 Destroy(collision.gameObject);
             }
             else if (collectible.type == Collectible.CollectibleType.ModeUnlock)
@@ -190,19 +199,48 @@ public class PlayerForm : MonoBehaviour
                 if (collectible.pickupEvent != null)
                     collectible.pickupEvent.Trigger();
 
+                player.sfx.PlayOneShot(collectible.collectSound);
+
                 Destroy(collision.gameObject);
             }
-
-            player.sfx.PlayOneShot(collectible.collectSound);
+            else if (collectible.type == Collectible.CollectibleType.Health)
+            {
+                if (player.health < player.maxHealth)
+                {
+                    player.health += collectible.healthAmount;
+                    player.UpdateHeartsUI();
+                    Destroy(collision.gameObject);
+                    player.sfx.PlayOneShot(collectible.collectSound);
+                }
+            }
+            else if (collectible.type == Collectible.CollectibleType.MaxHealth)
+            {
+                player.maxHealth += collectible.healthAmount;
+                player.health = player.maxHealth;
+                player.UpdateHeartsUI();
+                Destroy(collision.gameObject);
+            }
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("sign") || collision.CompareTag("door") || collision.CompareTag("switch"))
+        if (collision.CompareTag("sign") || collision.CompareTag("door") || collision.CompareTag("switch") || collision.CompareTag("interact_event"))
         {
             currentCollision = null;
             interactIndicator.SetActive(false);
         }
+    }
+
+    public void MakeSlippery()
+    {
+        rb2d.drag /= 32;
+        rb2d.mass *= 32;
+    }
+
+    public void MakeNotSlippery()
+    {
+        rb2d.drag *= 32;
+        rb2d.mass /= 32;
     }
 }

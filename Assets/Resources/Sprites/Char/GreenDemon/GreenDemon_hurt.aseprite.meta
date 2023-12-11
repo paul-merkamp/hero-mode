@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: fdb1dd2c685ec4245ae79d5089e5288f
+guid: a9b2c8f306f47f245b58162d094307c8
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -75,8 +75,8 @@ ScriptedImporter:
     importHiddenLayers: 0
     layerImportMode: 1
     defaultPivotSpace: 0
-    defaultPivotAlignment: 9
-    customPivotPosition: {x: 0.5, y: 0.05}
+    defaultPivotAlignment: 7
+    customPivotPosition: {x: 0.5, y: 0.5}
     spritePadding: 0
     generateModelPrefab: 1
     generateAnimationClips: 1
@@ -87,15 +87,15 @@ ScriptedImporter:
     importHiddenLayers: 0
     layerImportMode: 1
     defaultPivotSpace: 0
-    defaultPivotAlignment: 9
-    customPivotPosition: {x: 0.5, y: 0.05}
+    defaultPivotAlignment: 7
+    customPivotPosition: {x: 0.5, y: 0.5}
     spritePadding: 0
     generateModelPrefab: 1
     generateAnimationClips: 1
     addSortingGroup: 1
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 638371246060079749
+  platformSettingsDirtyTick: 0
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -119,18 +119,18 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: Arrow_kitchen
+  - name: GreenDemon_hurt
     originalName: 
-    pivot: {x: 0.5, y: 0.05}
+    pivot: {x: 0.5, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 30
-      height: 11
-    spriteID: 1c217ded1ffa63b438c536226351c22a
+      width: 28
+      height: 34
+    spriteID: 72e5decb3196bd744a21302156db4e64
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -142,59 +142,23 @@ ScriptedImporter:
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: -1689838880
-    name: Arrow_kitchen
+    guid: -2043674904
+    name: GreenDemon_hurt
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: Arrow_kitchen
+    - name: GreenDemon_hurt
       frameIndex: 0
       cellRect:
-        x: 0
+        x: 1
         y: 0
-        width: 30
-        height: 11
-      spriteId: 1c217ded1ffa63b438c536226351c22a
+        width: 28
+        height: 34
+      spriteId: 72e5decb3196bd744a21302156db4e64
     linkedCells: []
     parentIndex: -1
-  platformSettings:
-  - name: DefaultTexturePlatform
-    overridden: 0
-    ignorePlatformSupport: 0
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 0
-    compressionQuality: 50
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    androidETC2FallbackOverride: 0
-  - name: Standalone
-    overridden: 0
-    ignorePlatformSupport: 0
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 0
-    compressionQuality: 50
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    androidETC2FallbackOverride: 0
-  - name: Server
-    overridden: 0
-    ignorePlatformSupport: 0
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 0
-    compressionQuality: 50
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    androidETC2FallbackOverride: 0
+  platformSettings: []
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 30, y: 11}
+  canvasSize: {x: 30, y: 40}

@@ -51,7 +51,7 @@ public class PlayerModeController : MonoBehaviour
             modePanelAnimator.SetTrigger("Display");
     }
 
-    private void SetCurrentMode(int newMode)
+    public void SetCurrentMode(int newMode)
     {
         int oldMode = (int)currentMode;
 
