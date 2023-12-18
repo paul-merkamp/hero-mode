@@ -17,12 +17,15 @@ public class SurvivalSectionController : MonoBehaviour
     public bool started;
     private bool triggered = false;
 
+    public bool survivalSectionCompleted = false;
+
     public void Start()
     {
         gameEventController = FindAnyObjectByType<GameEventController>();
         timer = timeLimit;
     }
 
+    [System.Obsolete]
     public void Update()
     {
         if (started && !triggered)
@@ -55,6 +58,8 @@ public class SurvivalSectionController : MonoBehaviour
                 triggered = true;
 
                 GameObject.Find("UI/UI_SurvivalDisplay").transform.GetChild(0).gameObject.SetActive(false);
+            
+                survivalSectionCompleted = true;
             }
         }
     }

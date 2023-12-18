@@ -7,13 +7,22 @@ public class LoadingZone : MonoBehaviour
     public string sceneName;
     public GameObject loadingUI;
 
+    public bool requiresInteract = false;
+
+    public void Trigger()
+    {
+        loadingUI.SetActive(true);
+        StartCoroutine(LoadSceneAsync());
+    }
+
     public void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
-            loadingUI.SetActive(true);
-
-            StartCoroutine(LoadSceneAsync());
+            if (!requiresInteract)
+            {
+                Trigger();
+            }
         }
     }
 

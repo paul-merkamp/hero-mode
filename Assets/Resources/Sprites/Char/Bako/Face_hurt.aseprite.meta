@@ -121,15 +121,15 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: Face_hurt
     originalName: 
-    pivot: {x: 0.5416667, y: -1.2941177}
+    pivot: {x: 0.52000004, y: -0.95}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 24
-      height: 17
+      width: 25
+      height: 20
     spriteID: 520e6a22f25af514f8a15caf5ba52c05
     spriteBone: []
     spriteOutline: []
@@ -152,9 +152,9 @@ ScriptedImporter:
       frameIndex: 0
       cellRect:
         x: 17
-        y: 22
-        width: 24
-        height: 17
+        y: 19
+        width: 25
+        height: 20
       spriteId: 520e6a22f25af514f8a15caf5ba52c05
     linkedCells: []
     parentIndex: -1

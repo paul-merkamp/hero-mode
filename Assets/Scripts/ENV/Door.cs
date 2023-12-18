@@ -31,9 +31,13 @@ public class Door : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         sfx = GameObject.Find("SFX/SFX_Environment").GetComponent<AudioSource>();
 
-        if (doorType == DoorType.Locked || doorType == DoorType.Boss)
+        if (doorType == DoorType.Locked)
         {
             locked = true;
+        }
+        else if (doorType == DoorType.Boss)
+        {
+            locked = !PlayerData.bossDoorUnlocked;
         }
     }
 
@@ -50,14 +54,14 @@ public class Door : MonoBehaviour
         open = !open;
     }
 
-    private void Open()
+    public void Open()
     {
         col.SetActive(false);
         spriteRenderer.sprite = openSprite;
         sfx.PlayOneShot(openSFX);
     }
 
-    private void Close()
+    public void Close()
     {
         col.SetActive(true);
         spriteRenderer.sprite = closedSprite;

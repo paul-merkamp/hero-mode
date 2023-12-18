@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
+// this whole class is redundant. whoops. in too deep now.
 public class GameEvent : MonoBehaviour
 {
     public int id;
@@ -13,6 +14,7 @@ public class GameEvent : MonoBehaviour
         controller = FindAnyObjectByType<GameEventController>();
     }
 
+    [System.Obsolete]
     public void Trigger()
     {
         Debug.Log("Triggered event " + id);
@@ -48,6 +50,25 @@ public class GameEvent : MonoBehaviour
                 break;
             case 8:
                 controller.TriggerEvent_8();
+                break;
+            case 9:
+                controller.TriggerEvent_9();
+                break;
+            case 10:
+                controller.TriggerEvent_10();
+                break;
+            case 11:
+                // compiler error
+                // controller.TriggerEvent_11();
+                break;
+            case 12:
+                controller.TriggerEvent_12();
+                break;
+            case 15:
+                controller.TriggerEvent_15();
+                break;
+            default:
+                Debug.Log("Event " + id + " not found");
                 break;
             }
         }

@@ -12,7 +12,6 @@ public class CrushAsBigMode : MonoBehaviour
             if (destructible.type <= SimpleDestructible.DestructibleType.BigOnly)
             {
                 destructible.GetDestroyed();
-
             }
         }
     }

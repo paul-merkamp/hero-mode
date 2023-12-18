@@ -24,19 +24,31 @@ public class GreenDemonAI : Entity
     private bool activePhase1;
     private bool activePhase2;
 
+    public bool defeated = false;
+    public GameObject triggerGameObject;
+    public GameObject gateGameObject;
+
     private ParticleSystem deathParticles;
 
     public new void Start()
     {
-        sprite = GetComponent<SpriteRenderer>();
-        sfx = GameObject.Find("SFX/SFX_Entity").GetComponent<AudioSource>();
+        if (PlayerData.greenDemonDefeated)
+        {
+            gameObject.SetActive(false);
+            triggerGameObject.SetActive(false);
+            gateGameObject.SetActive(false);
+        }
+        else {
+            sprite = GetComponent<SpriteRenderer>();
+            sfx = GameObject.Find("SFX/SFX_Entity").GetComponent<AudioSource>();
 
-        defeatedEvent = GetComponent<GameEvent>();
-        phase2Event = GameObject.Find("EVENT/Event_6").GetComponent<GameEvent>();
+            defeatedEvent = GetComponent<GameEvent>();
+            phase2Event = GameObject.Find("EVENT/Event_6").GetComponent<GameEvent>();
 
-        TryGetComponent<Animator>(out animator);
+            TryGetComponent<Animator>(out animator);
 
-        deathParticles = GetComponentInChildren<ParticleSystem>();
+            deathParticles = GetComponentInChildren<ParticleSystem>();
+        }
     }
 
     public void StartAttacking()
@@ -55,6 +67,7 @@ public class GreenDemonAI : Entity
         }
     }
 
+    [System.Obsolete]
     public void StartPhase2()
     {
         phase2Event.Trigger();
@@ -75,11 +88,14 @@ public class GreenDemonAI : Entity
     }
 
     // Die starts the process
+    [System.Obsolete]
     public override void Die()
     {
         activePhase1 = false;
         activePhase2 = false;
         defeatedEvent.Trigger();
+
+        defeated = true;
     }
 
     // DeathAnimation is called when the demon dies
@@ -92,6 +108,8 @@ public class GreenDemonAI : Entity
     {
         deathParticles.Play();
         sprite.enabled = false;
+        transform.GetChild(0).gameObject.SetActive(false); // disable shadow
+
         yield return new WaitForSeconds(2f);
         gameObject.SetActive(false);
     }
@@ -102,6 +120,7 @@ public class GreenDemonAI : Entity
         disabledOnDefeat.SetActive(false);
     }
 
+    [System.Obsolete]
     public override void TakeDamage(int damage, GameObject collision = null)
     {
         if (!invincible)

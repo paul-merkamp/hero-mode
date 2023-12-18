@@ -10,6 +10,7 @@ public class GameEventController : MonoBehaviour
     private PlayerController player;
     private GameObject playerFollower;
     private DialogController dialogController;
+    private MusicController music;
 
     private CinemachineVirtualCamera vcam;
 
@@ -19,6 +20,7 @@ public class GameEventController : MonoBehaviour
         player = FindAnyObjectByType<PlayerController>();
         playerFollower = GameObject.Find("ENTITY/PlayerFollower");
         dialogController = FindAnyObjectByType<DialogController>();
+        music = FindAnyObjectByType<MusicController>();
 
         vcam = GameObject.Find("CAMERA/Virtual Camera").GetComponent<CinemachineVirtualCamera>();
     }
@@ -125,7 +127,7 @@ public class GameEventController : MonoBehaviour
 
         dialogController.TriggerDialog(new List<string>{
             "The <color=\"red\">red page</color> has granted you the power of <color=\"red\">Big Mode</color>!",
-            "Press <color=\"red\">N</color> or <color=\"red\">M</color> to switch between modes.",
+            "Use <color=\"red\">N</color> / <color=\"red\">M</color> to switch modes.",
         });
 
         StartCoroutine(Dialog_Coroutine(9f));
@@ -135,6 +137,8 @@ public class GameEventController : MonoBehaviour
     // Bako intro
     //
 
+    public Door bossDoor;
+
     public void TriggerEvent_3()
     {
         player.invincible = true;
@@ -142,12 +146,28 @@ public class GameEventController : MonoBehaviour
         blackBarController.ToggleBlackBars();
         VcamDampToTarget(GameObject.Find("ENTITY/BakoBoss_eventTarget"));
 
+        bossDoor.Close();
+        bossDoor.locked = true;
+
+        music.FadeOut();
+        
         dialogController.TriggerDialog(new List<string>{
             "\"You've sealed your <color=\"red\">doom</color> by coming here!\"",
             "\"Prepare to be my restaurant's <color=\"red\">NEXT SPECIAL</color>!\"",
         });
 
-        StartCoroutine(Dialog_Coroutine(8.5f));
+        StartCoroutine(Event_3(8.5f));
+    }
+
+    private IEnumerator Event_3(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        player.TogglePlayerControl();
+        blackBarController.ToggleBlackBars();
+        VcamReset();
+        player.invincible = false;
+
+        GameObject.Find("ENTITY/BakoBoss").GetComponent<BakoAI>().StartPhase1();
     }
 
     //
@@ -159,14 +179,28 @@ public class GameEventController : MonoBehaviour
         player.invincible = true;
         player.TogglePlayerControl();
         blackBarController.ToggleBlackBars();
-        VcamDampToTarget(GameObject.Find("ENTITY/BakoBoss_eventTarget"));
+        VcamDampToTarget(GameObject.Find("ENTITY/BakoBoss"));
 
         dialogController.TriggerDialog(new List<string>{
-            "\"No...\"",
-            "\"I can't believe I've been defeated by a mere <color=\"red\">snack</color>!\"",
+            "\"No... IMPOSSIBLE!\"",
+            "\"Defeated by a mere <color=\"red\">snack</color>!\"",
         });
 
-        StartCoroutine(Dialog_Coroutine(8.5f));
+        StartCoroutine(Event_4(5.5f));
+    }
+
+    public IEnumerator Event_4(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        StartCoroutine(GameObject.Find("ENTITY/BakoBoss").GetComponent<BakoAI>().DeathAnimation());
+        yield return new WaitForSeconds(2);
+
+        // return to the player
+        player.TogglePlayerControl();
+        blackBarController.ToggleBlackBars();
+        VcamReset();
+        player.invincible = false;
     }
 
     //
@@ -222,7 +256,7 @@ public class GameEventController : MonoBehaviour
             enemy.SetActive(true);
         }
 
-        player.transform.position = new Vector2(-10.19f, -0.9f);
+        player.ForcePlayerPosition(new Vector2(-6f, 1.68f));
     
         player.TogglePlayerControl();
         blackBarController.ToggleBlackBars();
@@ -236,18 +270,28 @@ public class GameEventController : MonoBehaviour
 
     public void TriggerEvent_7()
     {
-        player.invincible = true;
-        player.TogglePlayerControl();
-        blackBarController.ToggleBlackBars();
-        VcamDampToTarget(GameObject.Find("ENTITY/Vampire"));
+        SurvivalSectionController survivalSectionController = FindAnyObjectByType<SurvivalSectionController>();
+        if (!survivalSectionController.survivalSectionCompleted)
+        {
+            player.invincible = true;
+            player.TogglePlayerControl();
+            blackBarController.ToggleBlackBars();
+            VcamDampToTarget(GameObject.Find("ENTITY/Vampire"));
 
-        dialogController.TriggerDialog(new List<string>{
-            "\"I'm bored... you could be a bit of fun.\"",
-            "\"I'll let you pass if you can survive my minions.\"",
-            "\"Eliminate <color=#9c1ce6>10</color> of them, and I'll give you a prize.\"",
-        });
+            dialogController.TriggerDialog(new List<string>{
+                "\"I am bored... let us play a little game.\"",
+                "\"I will let you pass if you can survive my minions.\"",
+                "\"Eliminate <color=#9c1ce6>25</color> of them, and I will give you a prize.\"",
+            });
 
-        StartCoroutine(Event_7());
+            StartCoroutine(Event_7());
+        }
+        else
+        {
+            dialogController.TriggerDialog(new List<string>{
+                "\"You've already finished my challenge, child.\""
+            });
+        }
     }
 
     IEnumerator Event_7()
@@ -286,6 +330,9 @@ public class GameEventController : MonoBehaviour
         });
 
         StartCoroutine(Event_8());
+
+        SurvivalSectionController survivalSectionController = FindAnyObjectByType<SurvivalSectionController>();
+        survivalSectionController.survivalSectionCompleted = true;
     }
 
     IEnumerator Event_8()
@@ -294,11 +341,11 @@ public class GameEventController : MonoBehaviour
         yield return new WaitForSeconds(6f);
 
         // move to gate
-        VcamDampToTarget(GameObject.Find("ENV/ENV_Objects/RedDungeon/FreezerGate"));
+        VcamDampToTarget(GameObject.Find("ENV/ENV_Objects/NotDistanceLoaded/FreezerGate"));
         yield return new WaitForSeconds(2f);
 
         // Show gate open
-        GameObject.Find("ENV/ENV_Objects/RedDungeon/FreezerGate").SetActive(false);
+        GameObject.Find("ENV/ENV_Objects/NotDistanceLoaded/FreezerGate").SetActive(false);
         yield return new WaitForSeconds(1f);
 
         player.TogglePlayerControl();
@@ -324,6 +371,9 @@ public class GameEventController : MonoBehaviour
         });
 
         StartCoroutine(Event_9());
+
+        SurvivalSectionController survivalSectionController = FindAnyObjectByType<SurvivalSectionController>();
+        survivalSectionController.survivalSectionCompleted = true;
     }
 
     IEnumerator Event_9()
@@ -332,11 +382,11 @@ public class GameEventController : MonoBehaviour
         yield return new WaitForSeconds(6f);
 
         // move to gate
-        VcamDampToTarget(GameObject.Find("ENV/ENV_Objects/RedDungeon/FreezerGate"));
+        VcamDampToTarget(GameObject.Find("ENV/ENV_Objects/NotDistanceLoaded/FreezerGate"));
         yield return new WaitForSeconds(2f);
 
         // Show gate open
-        GameObject.Find("ENV/ENV_Objects/RedDungeon/FreezerGate").SetActive(false);
+        GameObject.Find("ENV/ENV_Objects/NotDistanceLoaded/FreezerGate").SetActive(false);
         yield return new WaitForSeconds(1f);
 
         player.TogglePlayerControl();
@@ -349,6 +399,7 @@ public class GameEventController : MonoBehaviour
     // Finished vampire room - enough kills
     //
 
+    [Obsolete]
     public void TriggerEvent_10()
     {
         player.invincible = true;
@@ -362,29 +413,161 @@ public class GameEventController : MonoBehaviour
         });
 
         StartCoroutine(Event_10());
+
+        SurvivalSectionController survivalSectionController = FindAnyObjectByType<SurvivalSectionController>();
+        survivalSectionController.survivalSectionCompleted = true;
     }
 
+    [Obsolete]
     IEnumerator Event_10()
     {
         // wait for dialog to finish
         yield return new WaitForSeconds(6f);
 
         // move to gate
-        VcamDampToTarget(GameObject.Find("ENV/ENV_Objects/RedDungeon/FreezerGate"));
+        VcamDampToTarget(GameObject.Find("ENV/ENV_Objects/NotDistanceLoaded/FreezerGate"));
         yield return new WaitForSeconds(2f);
 
         // spawn prize
         // setactive doesn't actually work on child objects, ignore obsolete warning
-        GameObject.Find("ENV/ENV_Objects/RedDungeon/SurvivalPrizeHeartContainer").SetActiveRecursively(true);
+        GameObject.Find("ENV/ENV_Objects/NotDistanceLoaded/SurvivalPrizeHeartContainer").SetActiveRecursively(true);
 
         // Show gate open
-        GameObject.Find("ENV/ENV_Objects/RedDungeon/FreezerGate").SetActive(false);
+        GameObject.Find("ENV/ENV_Objects/NotDistanceLoaded/FreezerGate").SetActive(false);
         yield return new WaitForSeconds(1f);
 
         player.TogglePlayerControl();
         blackBarController.ToggleBlackBars();
         VcamReset();
         player.invincible = false;
+    }
+
+    //
+    // Frog man satisfied
+    //
+
+    public void TriggerEvent_11()
+    {
+        player.invincible = true;
+        player.TogglePlayerControl();
+        blackBarController.ToggleBlackBars();
+        VcamDampToTarget(GameObject.Find("ENTITY/FrogMan"));
+
+        dialogController.TriggerDialog(new List<string>{
+            "\"You've done it! Thank you so much, ribbit!\"",
+        });
+
+        StartCoroutine(Event_11());
+    }
+
+    IEnumerator Event_11()
+    {
+        // wait for dialog to finish
+        yield return new WaitForSeconds(6f);
+
+        GameObject.Find("ENTITY/FrogMan").GetComponent<Animator>().SetTrigger("Transform");
+        yield return new WaitForSeconds(7f);
+
+        player.TogglePlayerControl();
+        blackBarController.ToggleBlackBars();
+        VcamReset();
+        player.invincible = false;
+    }
+
+    //
+    // Grey page - stealth
+    //
+
+    public void TriggerEvent_12()
+    {
+        player.invincible = true;
+        player.TogglePlayerControl();
+        blackBarController.ToggleBlackBars();
+
+        dialogController.TriggerDialog(new List<string>{
+            "The <color=#929292>grey page</color> has granted you the power of <color=#929292>Stealth Mode</color>!",
+            "Use <color=#929292>N</color>/<color=#929292>M</color> to switch modes.",
+        });
+
+        StartCoroutine(Dialog_Coroutine(9f));
+    }
+
+    //
+    // Bako enters phase 2
+    //
+
+    public void TriggerEvent_13()
+    {
+        player.invincible = true;
+        player.TogglePlayerControl();
+        blackBarController.ToggleBlackBars();
+        VcamDampToTarget(GameObject.Find("ENTITY/BakoBoss_eventTarget"));
+
+        dialogController.TriggerDialog(new List<string>{
+            "\"What, think you've beaten me? HAH!\"",
+        });
+
+        StartCoroutine(Event_13());
+    }
+
+    public IEnumerator Event_13()
+    {
+        yield return new WaitForSeconds(4f);
+
+        player.TogglePlayerControl();
+        blackBarController.ToggleBlackBars();
+        VcamReset();
+        player.invincible = false;
+
+        GameObject.Find("ENTITY/BakoBoss").GetComponent<BakoAI>().StartPhase2();
+    }
+
+    //
+    // Bako enters phase 3
+    //
+
+    public void TriggerEvent_14()
+    {
+        player.invincible = true;
+        player.TogglePlayerControl();
+        blackBarController.ToggleBlackBars();
+        VcamDampToTarget(GameObject.Find("ENTITY/BakoBoss_eventTarget"));
+        
+        dialogController.TriggerDialog(new List<string>{
+            "\"GAHAHA! DANCE, TINY MORTAL!\"",
+        });
+
+        StartCoroutine(Event_14());
+    }
+
+    public IEnumerator Event_14()
+    {
+        yield return new WaitForSeconds(6f);
+
+        player.TogglePlayerControl();
+        blackBarController.ToggleBlackBars();
+        VcamReset();
+        player.invincible = false;
+
+        GameObject.Find("ENTITY/BakoBoss").GetComponent<BakoAI>().StartPhase3();
+    }
+
+    //
+    // pickup magic page
+    //
+
+    public void TriggerEvent_15()
+    {
+        player.invincible = true;
+        player.TogglePlayerControl();
+        blackBarController.ToggleBlackBars();
+
+        dialogController.TriggerDialog(new List<string>{
+            "The <color=#5b28ca>purple page</color> has granted you the power of <color=#5b28ca>Magic Mode</color>!",
+            "Left click on light objects to <color=#5b28ca>drag</color> them!"
+        });
+
+        StartCoroutine(Dialog_Coroutine(9f));
     }
 
     //

@@ -1,7 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.ExceptionServices;
-using UnityEditor;
 using UnityEngine;
 
 public class HealthUIController : MonoBehaviour
@@ -13,7 +10,7 @@ public class HealthUIController : MonoBehaviour
 
     private List<GameObject> heartSlots = new List<GameObject>();
 
-    private void Awake()
+    private void Start()
     {
         player = FindObjectOfType<PlayerController>();
 
@@ -21,19 +18,17 @@ public class HealthUIController : MonoBehaviour
         {
             Destroy(layoutGroup.transform.GetChild(i).gameObject);
         }
-        for (int i=0; i<player.maxHealth; i++)
-        {
-            GameObject heartSlot = Instantiate(heartSlotPrefab, layoutGroup.transform);
-            heartSlot.name = "HeartSlot" + i;
-            heartSlots.Add(heartSlot);
-        }
+
+        UpdateHeartsUI();
     }
 
     public void UpdateHeartsUI()
     {
         if (heartSlots.Count < player.maxHealth)
         {
-            for (int i=0; i<player.maxHealth - heartSlots.Count; i++)
+            int difference = player.maxHealth - heartSlots.Count;
+
+            for (int i=0; i<difference; i++)
             {
                 GameObject heartSlot = Instantiate(heartSlotPrefab, layoutGroup.transform);
                 heartSlot.name = "HeartSlot" + (heartSlots.Count + i);

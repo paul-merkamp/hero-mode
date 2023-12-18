@@ -10,6 +10,8 @@ public class SimpleDestructible : MonoBehaviour
     public AudioClip hitSound;
     public GameObject destroyedComponentsGO;
 
+    public bool destroyed = false;
+
     public GameObject heartPrefab;
     public float heartDropChance = 0.5f;
 
@@ -52,9 +54,11 @@ public class SimpleDestructible : MonoBehaviour
             Destroy(door);
         }
 
-        if (heartDropChance > 0 && Random.Range(0f, 1f) <= heartDropChance)
+        if (heartPrefab != null && heartDropChance > 0 && Random.Range(0f, 1f) <= heartDropChance)
         {
             Instantiate(heartPrefab, transform.position, Quaternion.identity);
         }
+
+        destroyed = true;
     }
 }

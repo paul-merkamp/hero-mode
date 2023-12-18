@@ -7,9 +7,17 @@ public class CoveredAreaRevealer : MonoBehaviour
     public Animator bannerAnimator;
     public bool animatorTriggered = false;
 
+    private MusicController music;
+
+    public AudioClip musicToPlayOnEnter;
+    public AudioClip musicToPlayOnEnterSecondPass;
+    public AudioClip musicToPlayOnExit;
+    public AudioClip musicToPlayOnExitSecondPass;
+
     public void Start()
     {
         coveredArea.SetActive(true);
+        music = GameObject.Find("SYS/SYS_MusicController").GetComponent<MusicController>();
     }
 
     public void OnTriggerEnter2D(Collider2D collision)
@@ -23,6 +31,11 @@ public class CoveredAreaRevealer : MonoBehaviour
                 bannerAnimator.SetTrigger("Reveal");
                 animatorTriggered = true;
             }
+
+            if (musicToPlayOnEnter != null)
+            {
+                music.PlaySequentially(musicToPlayOnEnter, musicToPlayOnEnterSecondPass);
+            }
         }
     }
 
@@ -31,6 +44,11 @@ public class CoveredAreaRevealer : MonoBehaviour
         if (collision.CompareTag("player_follower"))
         {
             coveredArea.SetActive(true);
+            
+            if (musicToPlayOnExit != null)
+            {
+                music.PlaySequentially(musicToPlayOnExit, musicToPlayOnExitSecondPass);
+            }
         }
     }
 }

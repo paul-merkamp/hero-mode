@@ -48,7 +48,7 @@ public class DialogController : MonoBehaviour
     {
         List<string> gagLines = new()
         {
-            "You're a |a<color=\"yellow\"><b>baby</b></color>."
+            "You're a <color=\"yellow\"><b>baby</b></color>."
         };
 
         TriggerDialog(gagLines);

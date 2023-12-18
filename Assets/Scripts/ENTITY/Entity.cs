@@ -21,8 +21,8 @@ public class Entity : MonoBehaviour
 
     public int survivalScoreValue = 0;
 
-    private Rigidbody2D rb2d;
-    private float originalDrag;
+    public Rigidbody2D rb2d;
+    public float originalDrag;
 
     public void Start()
     {
@@ -88,7 +88,10 @@ public class Entity : MonoBehaviour
             animator.SetBool("Hurt", true);
         }
 
-        sfx.PlayOneShot(takeDamageSFX);
+        if (sfx != null)
+        {
+            sfx.PlayOneShot(takeDamageSFX);
+        }
         
         invincible = true;
 
@@ -131,5 +134,13 @@ public class Entity : MonoBehaviour
     public void MakeNotSlippery()
     {
         rb2d.drag = originalDrag;
+    }
+
+    public void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.CompareTag("damages_nonplayer"))
+        {
+            TakeDamage(1, col.gameObject);
+        }
     }
 }

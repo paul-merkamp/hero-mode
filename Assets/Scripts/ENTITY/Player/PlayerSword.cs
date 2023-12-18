@@ -50,6 +50,14 @@ public class PlayerSword : MonoBehaviour
                     destructible.GetDestroyed();
                 }
             }
+            else if (collider.gameObject.CompareTag("bako_hand"))
+            {
+                BakoHandAI hand = collider.gameObject.GetComponent<BakoHandAI>();
+                if (hand != null)
+                {
+                    hand.TakeDamage(1);
+                }
+            }
             else if (collider.gameObject.CompareTag("entity"))
             {
                 Entity entity = collider.gameObject.GetComponent<Entity>();

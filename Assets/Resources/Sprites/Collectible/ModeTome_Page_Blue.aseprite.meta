@@ -121,7 +121,7 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: ModeTome_Page_Blue_Frame_0
     originalName: 
-    pivot: {x: 0.5, y: -0.20000002}
+    pivot: {x: 0.5, y: -0.10000001}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -141,7 +141,7 @@ ScriptedImporter:
     uvTransform: {x: 4, y: 4}
   - name: ModeTome_Page_Blue_Frame_1
     originalName: 
-    pivot: {x: 0.5, y: -0.10000001}
+    pivot: {x: 0.5, y: -0.20000002}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -161,7 +161,7 @@ ScriptedImporter:
     uvTransform: {x: 4, y: 22}
   - name: ModeTome_Page_Blue_Frame_2
     originalName: 
-    pivot: {x: 0.5, y: 0}
+    pivot: {x: 0.5, y: -0.10000001}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -181,7 +181,7 @@ ScriptedImporter:
     uvTransform: {x: 4, y: 40}
   - name: ModeTome_Page_Blue_Frame_3
     originalName: 
-    pivot: {x: 0.5, y: -0.10000001}
+    pivot: {x: 0.5, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -212,7 +212,7 @@ ScriptedImporter:
       frameIndex: 0
       cellRect:
         x: 1
-        y: 2
+        y: 1
         width: 10
         height: 10
       spriteId: 324720306f39fc9478a39776c6444727
@@ -220,7 +220,7 @@ ScriptedImporter:
       frameIndex: 1
       cellRect:
         x: 1
-        y: 1
+        y: 2
         width: 10
         height: 10
       spriteId: 33fc87936b7c57d488359f0576808724
@@ -228,7 +228,7 @@ ScriptedImporter:
       frameIndex: 2
       cellRect:
         x: 1
-        y: 0
+        y: 1
         width: 10
         height: 10
       spriteId: 01b6bd2e62b0be54bb25dcebd229afcb
@@ -236,7 +236,7 @@ ScriptedImporter:
       frameIndex: 3
       cellRect:
         x: 1
-        y: 1
+        y: 0
         width: 10
         height: 10
       spriteId: 415e623085d687547baefcaf042d1480

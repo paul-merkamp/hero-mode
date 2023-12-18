@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GreenFireProjectile : MonoBehaviour
@@ -13,7 +10,8 @@ public class GreenFireProjectile : MonoBehaviour
     public enum Direction
     {
         down,
-        right
+        right,
+        up
     }
 
     public Direction direction;
@@ -30,6 +28,8 @@ public class GreenFireProjectile : MonoBehaviour
             transform.Translate(Vector2.right * speed * Time.deltaTime);
         else if (direction == Direction.down)
             transform.Translate(Vector2.down * speed * Time.deltaTime);
+        else if (direction == Direction.up)
+            transform.Translate(Vector2.up * speed * Time.deltaTime);
 
         // Decrease the lifetime timer
         lifetimeTimer -= Time.deltaTime;
@@ -41,24 +41,18 @@ public class GreenFireProjectile : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
+    [System.Obsolete]
+    private void OnTriggerEnter2D(Collider2D other)
     {
         // Check if the projectile collided with an Entity or Player
-        Entity entity = other.gameObject.GetComponent<Entity>();
         PlayerForm player = other.gameObject.GetComponent<PlayerForm>();
 
-        if (entity != null)
-        {
-            // Deal damage to the entity
-            entity.TakeDamage(damage);
-        }
-        else if (player != null)
+        if (player != null)
         {
             // Deal damage to the player
             player.TakeDamage(damage, gameObject);
+            // Destroy the projectile
+            Destroy(gameObject);
         }
-
-        // Destroy the projectile
-        Destroy(gameObject);
     }
 }

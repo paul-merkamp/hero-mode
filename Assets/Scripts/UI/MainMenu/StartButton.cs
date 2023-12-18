@@ -9,7 +9,11 @@ public class StartButton : MonoBehaviour
     private Animator animator;
     private DialogController dialogController;
 
+    public ModePanel babyPanel;
+    public ModePanel knightPanel;
+
     private bool wasSelected = false;
+    private bool busy = false;
 
     private void Start()
     {
@@ -18,48 +22,77 @@ public class StartButton : MonoBehaviour
         dialogController = FindObjectOfType<DialogController>();
     }
 
-    private void OnMouseEnter()
+    public void TryStartGame()
     {
-        if (!wasSelected)
-            animator.SetBool("Raised", true);
+        if (!busy)
+        {
+            if (MainMenuController.selectedMode == MainMenuController.GameMode.Normal)
+            {
+                PlayGag();
+            }
+            else if (MainMenuController.selectedMode == MainMenuController.GameMode.Baby)
+            {
+                StartGame();
+            }
+        }
     }
 
-    private void OnMouseExit()
+    public Animator startGameAnimator;
+
+    public void StartGame()
     {
-        if (!wasSelected)
-            animator.SetBool("Raised", false);
+        startGameAnimator.SetTrigger("Fade");
+
+        StartCoroutine(StartGameDelay());
     }
 
-    private void OnMouseDown()
+    public IEnumerator StartGameDelay()
     {
-        if (!wasSelected && MainMenuController.selectedMode == MainMenuController.GameMode.Normal)
+        yield return new WaitForSeconds(3f);
+
+        UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+    }
+
+    public int gagCounter = 0;
+
+    public void PlayGag()
+    {
+        if (gagCounter == 0)
         {
             dialogController.TriggerDialog(new()
             {
-                "You're a |a<color=\"yellow\"><b>baby</b></color>."
+                "I think you misclicked. Here, let me fix that."
             });
 
-            animator.SetBool("Raised", false);
-            wasSelected = true;
+            StartCoroutine(Gag());
 
-            StartCoroutine(gagDelay());
+            gagCounter++;
         }
 
-        else if (!wasSelected)
+        else if (gagCounter == 1)
         {
-            if (selectAudio != null)
-                sfx.PlayOneShot(selectAudio);
+            dialogController.TriggerDialog(new()
+            {
+                "No, no. You're a |a<color=\"yellow\"><b>baby</b></color>."
+            });
 
-            animator.SetBool("Raised", false);
-            wasSelected = true;
+            StartCoroutine(Gag());
+
+            gagCounter++;
+        }
+
+        else if (gagCounter == 2)
+        {
+            knightPanel.Disable();
         }
     }
 
-    IEnumerator gagDelay()
+    IEnumerator Gag()
     {
-        yield return new WaitForSeconds(3f);
-        
-        animator.SetBool("Raised", true);
-        wasSelected = false;
+        busy = true;
+        yield return new WaitForSeconds(4f);
+        busy = false;
+
+        babyPanel.Select();
     }
 }

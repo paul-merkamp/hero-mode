@@ -11,6 +11,9 @@ public class ModePanel : MonoBehaviour
     private Animator animator;
     private bool isSelected = false;
 
+    private bool disabled = false;
+    public GameObject disabledIndicator;
+
     private void Start()
     {
         animator = GetComponent<Animator>();
@@ -18,11 +21,39 @@ public class ModePanel : MonoBehaviour
         sfx = FindObjectOfType<AudioSource>();
     }
 
+    public void Select()
+    {
+        if (!disabled)
+        {
+            if (selectAudio != null && isSelected == false)
+                sfx.PlayOneShot(selectAudio);
+
+            isSelected = true;
+            animator.SetBool("Raised", true);
+
+            if (mode != MainMenuController.GameMode.None)
+                MainMenuController.selectedMode = mode;
+            
+            if (pairedPanel != null) pairedPanel.Deselect();
+        }
+    }
+
+    public void Disable()
+    {
+        disabled = true;
+        disabledIndicator.SetActive(true);
+        animator.SetBool("Raised", false);
+    }
+    
     private void OnMouseEnter()
     {
-        if (!isSelected)
+        if (!isSelected && !disabled)
         {
             animator.SetBool("Raised", true);
+        }
+        else if (disabled)
+        {
+            animator.SetBool("Raised", false);
         }
     }
 
@@ -36,14 +67,7 @@ public class ModePanel : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (selectAudio != null && isSelected == false)
-            sfx.PlayOneShot(selectAudio);
-
-        isSelected = true;
-        if (mode != MainMenuController.GameMode.None)
-            MainMenuController.selectedMode = mode;
-
-        if (pairedPanel != null) pairedPanel.Deselect();
+        Select();
     }
 
     public void Deselect()

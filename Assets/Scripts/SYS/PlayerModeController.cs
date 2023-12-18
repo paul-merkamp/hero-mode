@@ -17,33 +17,37 @@ public class PlayerModeController : MonoBehaviour
         Stealth
     }
 
+    private int modesCount = 5;
+
     public List<PlayerMode> unlockedModes;
 
     public List<GameObject> modeGOs;
-    public List<GameObject> playerForms;
-
-    private PlayerController player;
+    private List<GameObject> playerForms;
 
     private MagicController magic;
 
-    public void Awake()
+    public void Start()
     {
         follower = FindObjectOfType<PlayerFollower>();
 
-        player = FindAnyObjectByType<PlayerController>();
         magic = FindAnyObjectByType<MagicController>();
 
-        unlockedModes = new List<PlayerMode>
+        unlockedModes = PlayerData.unlockedModes;
+
+        playerForms = new List<GameObject>();
+
+        // Get all child GameObjects of Player/Forms
+        Transform formsTransform = GameObject.Find("Player/Forms").transform;
+        for (int i = 0; i < formsTransform.childCount; i++)
         {
-            PlayerMode.Sword
-        };
+            playerForms.Add(formsTransform.GetChild(i).gameObject);
+        }
     }
 
     public void SwitchModes(int adder)
     {
         int oldMode = (int)currentMode;
-        int modeCount = unlockedModes.Count;
-        int newMode = CalculateNewMode(adder, modeCount);
+        int newMode = CalculateNewMode(adder);
 
         SetCurrentMode(newMode);
 
@@ -78,16 +82,20 @@ public class PlayerModeController : MonoBehaviour
         follower.target = playerForms[newMode];
     }
 
-    private int CalculateNewMode(int adder, int modeCount)
+    private int CalculateNewMode(int adder)
     {
         int newMode = (int)currentMode + adder;
-        if (newMode < 0)
+        while (!unlockedModes.Contains((PlayerMode)newMode))
         {
-            newMode = modeCount - 1;
-        }
-        else if (newMode >= modeCount)
-        {
-            newMode = 0;
+            newMode += adder;
+            if (newMode < 0)
+            {
+                newMode = modesCount - 1;
+            }
+            else if (newMode >= modesCount)
+            {
+                newMode = 0;
+            }
         }
         return newMode;
     }

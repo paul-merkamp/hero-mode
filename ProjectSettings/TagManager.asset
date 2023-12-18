@@ -16,6 +16,11 @@ TagManager:
   - event
   - loading_zone
   - interact_event
+  - damages_nonplayer
+  - frog_man
+  - bako_hand
+  - lava_immunity
+  - checkpoint
   layers:
   - Default
   - TransparentFX
